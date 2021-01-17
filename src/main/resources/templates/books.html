@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmls:th="http/www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Books - All books</title>
+<link href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<div class="container text-center">
+		<div>
+			<h1>Lista knjiga u knjizari</h1>
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend">
+				<span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+			</div>
+			<input id="search" type="text" class="form-control" placeholder="Search..."
+				aria-label="Search" aria-describedby="basic-addon1">
+		</div>
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ISBN</th>
+						<th>Naziv</th>
+						<th>Izdavacka kuca</th>
+						<th>Autor</th>
+						<th>Godina izdavanja</th>
+						<th>Kratak opis</th>
+						<th>Cena</th>
+						<th>Broj stranica</th>
+						<th>Povez</th>
+						<th>Pismo</th>
+						<th>Jezik</th>
+						<th>Prosecna ocena knjige</th>
+						<th>Broj primeraka</th>
+						<th>Zanr</th>
+						<th>Detalji</th>
+					</tr>
+				</thead>
+				<tbody id="bookTable">
+					<tr th:each="book: ${listOfBooks}">
+						<td th:text="${book.isbn}">ISBN</td>
+						<td th:text="${book.nameOfBook}">Name of book</a></td>
+						<td th:text="${book.printingHouse}">Printing House</td>
+						<td th:text="${book.author}">Author</td>
+						<td th:text="${book.yearOfPublication}">Year of publication</td>
+						<td th:text="${book.shortDescription}">Short description</td>
+						<td th:text="${book.price}">Price</td>
+						<td th:text="${book.numberPages}">Number pages</td>
+						<td th:text="${book.bookCover}">Book cover</td>
+						<td th:text="${book.letter}">Letter</td>
+						<td th:text="${book.language}">Language</td>
+						<td th:text="${book.averageMarkBook}">Average mark book
+							</td>
+						<td th:text="${book.quantity}">Quantity</td>
+						<td th:each="genre: ${book.genres}" th:text="${genre.name}">Genre</td>
+						<td><a class="btn btn-light" th:href="@{'/book/' + ${book.id}}" role="button">Detalji</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+	
+	<script>
+		$(document).ready(function() {
+			$("#search").on("keyup",function() {
+				var value = $(this).val().toLowerCase();
+				$("#bookTable tr").filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+	</script>
+</body>
+</html>

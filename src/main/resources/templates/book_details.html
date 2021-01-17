@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmls:th="http/www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<base href="/">
+<title>Book Details</title>
+<link href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body>
+	<div class="container text-center">
+		<div>
+			<h1>Knjiga</h1>
+		</div>
+		<div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ISBN</th>
+						<th>Naziv</th>
+						<th>Izdavacka kuca</th>
+						<th>Autor</th>
+						<th>Godina izdavanja</th>
+						<th>Kratak opis</th>
+						<th>Cena</th>
+						<th>Broj stranica</th>
+						<th>Povez</th>
+						<th>Pismo</th>
+						<th>Jezik</th>
+						<th>Prosecna ocena knjige</th>
+						<th>Broj primeraka</th>
+						<th>Zanr</th>
+					</tr>
+				</thead>
+				<tbody id="bookTable">
+					<tr>
+						<td th:text="${book.isbn}">ISBN</td>
+						<td th:text="${book.nameOfBook}">Name of book</td>
+						<td th:text="${book.printingHouse}">Printing House</td>
+						<td th:text="${book.author}">Author</td>
+						<td th:text="${book.yearOfPublication}">Year of publication</td>
+						<td th:text="${book.shortDescription}">Short description</td>
+						<td th:text="${book.price}">Price</td>
+						<td th:text="${book.numberPages}">Number pages</td>
+						<td th:text="${book.bookCover}">Book cover</td>
+						<td th:text="${book.letter}">Letter</td>
+						<td th:text="${book.language}">Language</td>
+						<td th:text="${book.averageMarkBook}">Average mark book
+							</td>
+						<td th:text="${book.quantity}">Quantity</td>
+						<td th:each="genre: ${book.genres}" th:text="${genre.name}">Genre</td>
+							</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			var isbn = $("#knjigaIsbn").text();
+			var korisnikId = $("#pKorisnikId").text();
+			var brojPrimeraka = $("#knjigaBrojPrimeraka").text();
+			var cena = $("#knjigaCena").text();
+
+			$("#korpaKnjigaId").val(isbn);
+			$("#korpaKorisnikId").val(korisnikId);
+			$("#korpaBrojPrimeraka").val(1).attr("max", brojPrimeraka);
+			$("#korpaCena").val(cena);
+
+			$("#korpaBrojPrimeraka").change(function() {
+				var ukupnaCena = cena * $("#korpaBrojPrimeraka").val();
+				$("#korpaCena").val(ukupnaCena);
+			});
+
+		});
+	</script>
+</body>
+</html>
