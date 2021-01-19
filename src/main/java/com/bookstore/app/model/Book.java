@@ -155,7 +155,8 @@ public class Book {
 		}
 
 		public void setGenres(List<Genre> genres) {
-			this.genres = genres;
+			this.genres.clear();
+			this.genres.addAll(genres);
 		}
 		
 		

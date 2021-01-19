@@ -1,7 +1,10 @@
 package com.bookstore.app.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,8 +12,11 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookstore.app.dao.BookDAO;
 import com.bookstore.app.dao.GenreDAO;
@@ -33,6 +39,7 @@ public class BookDAOImpl implements BookDAO {
 		@Override
 		public void processRow(ResultSet rs) throws SQLException {
 			int index = 1;
+			
 			Long bookId = rs.getLong(index++);
 			Book book = books.get(bookId);
 			if(book == null) {
@@ -53,6 +60,8 @@ public class BookDAOImpl implements BookDAO {
 
 				book.setQuantity(rs.getInt(index++));
 				books.put(bookId, book);
+			} else {
+				index = 15;
 			}
 			
 			Long genreId = rs.getLong(index++);
@@ -96,5 +105,72 @@ public class BookDAOImpl implements BookDAO {
 		Book book =  rowCallbackHandler.getAllBooks().get(0);
 
 		return book;
+	}
+	
+	@Transactional
+	@Override
+	public void createBook(Book book) {
+		
+		PreparedStatementCreator preparedStatementCreator = new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				String sql = "INSERT INTO book (isbn, name_of_book, printing_house, author, year_of_publication, "
+						+ "short_description, price, number_pages, bookCover, letter, languages, quantity, average_mark_book)"
+						+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";	
+				int index=1;
+				PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				preparedStatement.setString(index++,book.getIsbn());
+				preparedStatement.setString(index++,book.getNameOfBook());
+				preparedStatement.setString(index++,book.getPrintingHouse());
+				preparedStatement.setString(index++,book.getAuthor());
+				preparedStatement.setInt(index++,book.getYearOfPublication());
+				preparedStatement.setString(index++,book.getShortDescription());
+				preparedStatement.setDouble(index++,book.getPrice());
+				preparedStatement.setInt(index++,book.getNumberPages());
+				preparedStatement.setString(index++,book.getBookCover());
+				preparedStatement.setString(index++,book.getLetter());
+				preparedStatement.setString(index++,book.getLanguage());
+				preparedStatement.setInt(index++,book.getQuantity());
+				preparedStatement.setDouble(index++,book.getAverageMarkBook());
+				return preparedStatement;
+			}
+		};
+		
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(preparedStatementCreator, keyHolder);
+
+		
+//		jdbcTemplate.update(book.getIsbn(), book.getNameOfBook(), book.getPrintingHouse(), book.getAuthor(),
+//				book.getYearOfPublication(), book.getShortDescription(), book.getPrice(), book.getNumberPages(),
+//				book.getBookCover(), book.getLetter(), book.getLanguage(), book.getQuantity(),book.getAverageMarkBook());
+		
+		
+		
+		for (Genre genre : book.getGenres()) {
+			String sql = "INSERT INTO bookgenre(bookid, genreid) "
+					+ "VALUES('" + keyHolder.getKey() +"','"+ genre.getId() +"')";
+			jdbcTemplate.update(sql);
+		}
+	}
+
+	@Transactional
+	@Override
+	public void updateBook(Book book) {
+
+		String sql = "UPDATE book SET isbn = ?, name_of_book = ?, printing_house = ?,author = ?, year_of_publication = ?, "
+				+ "short_description = ?, price=?, number_pages = ?, bookCover = ?, letter=?, languages =?, quantity =? WHERE id = ?";	
+		jdbcTemplate.update(sql, book.getIsbn(), book.getNameOfBook(), book.getPrintingHouse(), book.getAuthor(),
+				book.getYearOfPublication(), book.getShortDescription(), book.getPrice(), book.getNumberPages(),
+				book.getBookCover(), book.getLetter(), book.getLanguage(), book.getQuantity(), book.getId());
+		
+		sql = "DELETE from bookgenre WHERE bookId=?";
+		jdbcTemplate.update(sql,book.getId());
+		
+		for (Genre genre : book.getGenres()) {
+			sql = "INSERT INTO bookgenre(bookid, genreid) "
+					+ "VALUES('" + book.getId() +"','"+ genre.getId() +"')";
+			jdbcTemplate.update(sql);
+		}
 	}
 }

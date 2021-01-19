@@ -24,20 +24,19 @@
 				<thead>
 					<tr>
 						<th>ISBN</th>
-						<th>Naziv</th>
-						<th>Izdavacka kuca</th>
-						<th>Autor</th>
-						<th>Godina izdavanja</th>
-						<th>Kratak opis</th>
-						<th>Cena</th>
-						<th>Broj stranica</th>
-						<th>Povez</th>
-						<th>Pismo</th>
-						<th>Jezik</th>
-						<th>Prosecna ocena knjige</th>
-						<th>Broj primeraka</th>
-						<th>Zanr</th>
-						<th>Detalji</th>
+						<th>Name of book</th>
+						<th>Printing House</th>
+						<th>Author</th>
+						<th>Year of publication</th>
+						<th>Short description</th>
+						<th>Price</th>
+						<th>Number of pages</th>
+						<th>Book cover</th>
+						<th>Letter</th>
+						<th>Language</th>
+						<th>Average mark book</th>
+						<th>Quantity</th>
+						<th>Details</th>
 					</tr>
 				</thead>
 				<tbody id="bookTable">
@@ -49,18 +48,21 @@
 						<td th:text="${book.yearOfPublication}">Year of publication</td>
 						<td th:text="${book.shortDescription}">Short description</td>
 						<td th:text="${book.price}">Price</td>
-						<td th:text="${book.numberPages}">Number pages</td>
+						<td th:text="${book.numberPages}">Number of pages</td>
 						<td th:text="${book.bookCover}">Book cover</td>
 						<td th:text="${book.letter}">Letter</td>
 						<td th:text="${book.language}">Language</td>
 						<td th:text="${book.averageMarkBook}">Average mark book
 							</td>
 						<td th:text="${book.quantity}">Quantity</td>
-						<td th:each="genre: ${book.genres}" th:text="${genre.name}">Genre</td>
-						<td><a class="btn btn-light" th:href="@{'/book/' + ${book.id}}" role="button">Detalji</a></td>
+						<td><p th:each="genre: ${book.genres}" th:text="${genre.name}"></p></td>
+						<td><a class="btn btn-light" th:href="@{'/book/' + ${book.id}}" role="button">Details</a>
+						<a th:if="${session.currentUser != null and session.currentUser.getRole().equals(session.currentUser.ADMIN)}" class="btn btn-light" th:href="@{'/book/update/' + ${book.id}}" role="button">Update</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
+			<a th:if="${session.currentUser != null and session.currentUser.getRole().equals(session.currentUser.ADMIN)}" class="btn btn-light" th:href="@{/book/create}" role="button">Create new book</a>
 		</div>
 	</div>
 	<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>

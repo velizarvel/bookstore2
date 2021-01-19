@@ -10,26 +10,26 @@
 <body>
 	<div class="container text-center">
 		<div>
-			<h1>Knjiga</h1>
+			<h1 th:text="${book.nameOfBook}"></h1>
 		</div>
 		<div>
 			<table class="table">
 				<thead>
 					<tr>
 						<th>ISBN</th>
-						<th>Naziv</th>
-						<th>Izdavacka kuca</th>
-						<th>Autor</th>
-						<th>Godina izdavanja</th>
-						<th>Kratak opis</th>
-						<th>Cena</th>
-						<th>Broj stranica</th>
-						<th>Povez</th>
-						<th>Pismo</th>
-						<th>Jezik</th>
-						<th>Prosecna ocena knjige</th>
-						<th>Broj primeraka</th>
-						<th>Zanr</th>
+						<th>Name of book</th>
+						<th>Printing House</th>
+						<th>Author</th>
+						<th>Year of publication</th>
+						<th>Short description</th>
+						<th>Price</th>
+						<th>Number of pages</th>
+						<th>Book cover</th>
+						<th>Letter</th>
+						<th>Language</th>
+						<th>Average mark book</th>
+						<th>Quantity</th>
+						<th>Details</th>
 					</tr>
 				</thead>
 				<tbody id="bookTable">
@@ -57,24 +57,5 @@
 	</div>
 	<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<script src="webjars/jquery/3.0.0/jquery.min.js"></script>
-	<script>
-		$(document).ready(function() {
-			var isbn = $("#knjigaIsbn").text();
-			var korisnikId = $("#pKorisnikId").text();
-			var brojPrimeraka = $("#knjigaBrojPrimeraka").text();
-			var cena = $("#knjigaCena").text();
-
-			$("#korpaKnjigaId").val(isbn);
-			$("#korpaKorisnikId").val(korisnikId);
-			$("#korpaBrojPrimeraka").val(1).attr("max", brojPrimeraka);
-			$("#korpaCena").val(cena);
-
-			$("#korpaBrojPrimeraka").change(function() {
-				var ukupnaCena = cena * $("#korpaBrojPrimeraka").val();
-				$("#korpaCena").val(ukupnaCena);
-			});
-
-		});
-	</script>
 </body>
 </html>

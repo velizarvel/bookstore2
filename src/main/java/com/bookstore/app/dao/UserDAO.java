@@ -9,11 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bookstore.app.dao.impl.GenreDAOImpl;
 import com.bookstore.app.model.Genre;
+import com.bookstore.app.model.User;
 
 
-public interface GenreDAO {
+public interface UserDAO {
 
-	public List<Genre> getGenres();
+	public List<User> getAllUsers();
 	
-	public Genre findGenreById(Long genreId);
+	public User findUserById(Long userId);
+	
+	public User findUserByUsernameAndPassword(String username, String password);
+	
+	public void createUser(User user);
 }

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmls:th="http/www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<base href="/">
+<title>Update book</title>
+<link href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container text-center"
+		th:if="${session.currentUser != null and session.currentUser.getRole().equals(session.currentUser.ADMIN)}">
+		<div>
+			<h1 th:text="${book.nameOfBook}"></h1>
+		</div>
+		<form th:action="@{/book/created}" method="post"
+			style="max-width: 600px; margin: 0 auto" th:object="${book}">
+			<div class="m-3">
+				<div class="form-group row">
+					<label class="col-form-label col-4">Name</label>
+					<div class=col-8>
+						<input type="text" class="form-control" th:field="*{nameOfBook}"
+							required value="${book.nameOfBook}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">ISBN</label>
+					<div class=col-8>
+						<input type="text" class="form-control" th:field="*{isbn}"
+							required value="${book.isbn}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Printing house</label>
+					<div class=col-8>
+						<input type="text" class="form-control"
+							th:field="*{printingHouse}" required
+							value="${book.printingHouse}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Author</label>
+					<div class=col-8>
+						<input type="text" class="form-control" th:field="*{author}"
+							required value="${book.author}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Year of publication</label>
+					<div class=col-8>
+						<input type="number" class="form-control"
+							th:field="*{yearOfPublication}" required
+							value="${book.yearOfPublication}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Short description</label>
+					<div class=col-8>
+						<input type="text" class="form-control"
+							th:field="*{shortDescription}" required
+							value="${book.shortDescription}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Price</label>
+					<div class=col-8>
+						<input type="number" class="form-control" th:field="*{price}"
+							required value="${book.price}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Quantity</label>
+					<div class=col-8>
+						<input type="number" class="form-control" th:field="*{quantity}"
+							required value="${book.quantity}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Number of pages</label>
+					<div class=col-8>
+						<input type="number" class="form-control"
+							th:field="*{numberPages}" required value="${book.numberPages}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Book cover</label>
+					<div class=col-8>
+						<select name="bookCover" id="bookCover" class="form-control"
+							th:field="*{bookCover}">
+							<option value="soft">soft</option>
+							<option value="hard">hard</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Letter</label>
+					<div class=col-8>
+						<select name="letter" id="letter" class="form-control"
+							th:field="*{letter}">
+							<option value="cyrilic">cyrilic</option>
+							<option value="latynic">latynic</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-form-label col-4">Language</label>
+					<div class=col-8>
+						<input type="text" class="form-control" th:field="*{language}"
+							required value="${book.language}" />
+					</div>
+				</div>
+				<td><th:block th:each="genre: ${allGenres}">
+						<input type="checkbox" name="genreId" th:value="${genre.id}" />
+						<span th:text="${genre.name}"></span>
+						<br>
+					</th:block></td>
+				<!-- 				<div class="form-group row" th:each="genre: ${allGenres}">
+					<label class="col-form-label col-4" th:text="${genre.name}">Zanr</label>
+					<div class=col-8>
+						<input type="checkbox" class="form-control" th:field="*{genres}"
+							th:value="${genre.id}" th:name="genre"
+							th:checked="${book.genres.contains(genre)}" />
+					</div>
+				</div> -->
+				<div>
+					<input type="number" th:field="*{averageMarkBook}"
+						th:value="${book.averageMarkBook}" hidden />
+				</div>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+	</div>
+	<div class="container text-center"
+		th:if="${session.currentUser == null}">
+		<h3>Please <a th:href="@{/login}">click here to </a> sign in as admin</h3>
+	</div>
+	<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="webjars/jquery/1.9.1/jquery.min.js"></script>
+</body>
+</html>

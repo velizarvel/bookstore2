@@ -12,5 +12,9 @@ public interface BookService {
 	public List<Book> getAllBooks();
 
 	public Book findBookById(Long id);
-
+	
+	public void createBook(Book book);
+	
+	public void updateBook(Book book);
+	
 }

@@ -7,5 +7,7 @@ import com.bookstore.app.model.Genre;
 public interface GenreService {
 	
 	public List<Genre> getAllGenres();
+	
+	public Genre findGenreById(Long genreId);
 
 }

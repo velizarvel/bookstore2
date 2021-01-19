@@ -15,4 +15,8 @@ public interface BookDAO {
 	public List<Book> getBooks();
 	
 	public Book findBookById(Long id);
+	
+	public void updateBook(Book book);
+	
+	public void createBook(Book book);
 }

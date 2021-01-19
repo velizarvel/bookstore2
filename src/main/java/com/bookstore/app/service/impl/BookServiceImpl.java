@@ -24,5 +24,17 @@ public class BookServiceImpl implements BookService {
 	public Book findBookById(Long id) {
 		return bookDAO.findBookById(id);
 	}
+	
+	@Override
+	public void createBook(Book book) {
+		bookDAO.createBook(book);		
+	}
+
+	@Override
+	public void updateBook(Book book) {
+		bookDAO.updateBook(book);	
+	}
+	
+	
 
 }

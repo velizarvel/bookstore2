@@ -44,4 +44,12 @@ public class GenreDAOImpl implements GenreDAO {
 		return jdbcTemplate.query(sql, new GenreRowMapper());
 	}
 
+
+
+	@Override
+	public Genre findGenreById(Long genreId) {
+		String sql = "SELECT id, name, description FROM genre WHERE id=?";
+		return jdbcTemplate.query(sql, new GenreRowMapper(), genreId).get(0);
+	}
+
 }
